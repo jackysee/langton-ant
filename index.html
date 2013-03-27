@@ -38,16 +38,22 @@
 	<script>
 		//GUI glue code
 		var gen = util.$("#generate")[0];
+		var dim = util.$("#dim")[0];
 		var planeWrap = util.$("#planeWrap")[0];
+		var table = util.$("#plane")[0];
+		var stopButton = util.$("#stop")[0];
+
 		gen.addEventListener("click", function(){
-			Plane.generate(parseInt(util.$('#dim')[0].value, 10));
+			App.stop();
+			Plane.clean();
+			Plane.generate(parseInt(dim.value, 10));
 			planeWrap.style.display = "";
 		});
 
-		var table = util.$("#plane")[0];
-		var stopButton = util.$("#stop")[0];
 		plane.addEventListener("click", function(ev){
 			if(util.isTd(ev)){
+				App.stop();
+				Plane.clean();
 				App.start(util.getXy(ev));
 				stopButton.style.display = "";
 			}
