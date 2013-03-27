@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Langton's Ant</title>
+	<script src="ant.js"></script>
+	<style>
+		#plane td {
+			width: 20px;
+			height: 20px;
+			border: 1px solid #CCC;
+		}
+		#plane {
+			border-collapse: collapse;
+		}
+		#plane td.black{
+			background-color: black;
+		}
+		#planeWrap { padding: 1em;}
+	</style>
+</head>
+<body>
+	<h1>Langon's Ant</h1>
+	<p>This is an implementation of <a href="http://en.wikipedia.org/wiki/Langton%27s_ant">Langon's Ant</a> in js</p>
+
+	<fieldset>
+		<legend>Dimension</legend>
+		 <input type="number" id="dim" value="20"/>
+		 <button id="generate">Generate</button>
+	</fieldset>
+	<div id="planeWrap" style="display:none">
+		<table id="plane"></table>
+		<p>
+			Click on one of the cell as ant position
+			<button id="stop" style="display:none">Stop</button>
+		</p>
+	</div>
+	<script>
+
+		var App = {
+			timer: null,
+			start: function(xy){
+				Ant.init(xy, 'n', Plane);
+				this.timer = setInterval(function(){ Ant.walk(); }, 100);
+			},
+			stop: function(){
+				clearInterval(this.timer);
+			}
+		};
+
+		var util = {
+			$: function(id){
+				return document.getElementById(id);
+			},
+			isTd: function(ev){
+				return ev.target.tagName.toLowerCase() === 'td'
+			},
+			getXy: function(ev){
+				return ev.target.id.split("-").map(function(num){
+					return parseInt(num, 10);
+				});
+			}
+		}
+
+		//Generate
+		var gen = util.$("generate");
+		var planeWrap = util.$("planeWrap");
+		gen.addEventListener("click", function(){
+			Plane.generate(parseInt(util.$('dim').value, 10));
+			planeWrap.style.display = "";
+		});
+
+		var table = util.$("plane");
+		var stopButton = util.$("stop");
+		plane.addEventListener("click", function(ev){
+			if(util.isTd(ev)){
+				App.start(util.getXy(ev));
+				stopButton.style.display = "";
+			}
+		});
+
+		stopButton.addEventListener("click", function(){
+			App.stop();
+		});
+
+	</script>
+</body>
+</html>
