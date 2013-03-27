@@ -36,33 +36,7 @@
 		</p>
 	</div>
 	<script>
-
-		var App = {
-			timer: null,
-			start: function(xy){
-				Ant.init(xy, 'n', Plane);
-				this.timer = setInterval(function(){ Ant.walk(); }, 100);
-			},
-			stop: function(){
-				clearInterval(this.timer);
-			}
-		};
-
-		var util = {
-			$: function(id){
-				return document.getElementById(id);
-			},
-			isTd: function(ev){
-				return ev.target.tagName.toLowerCase() === 'td'
-			},
-			getXy: function(ev){
-				return ev.target.id.split("-").map(function(num){
-					return parseInt(num, 10);
-				});
-			}
-		}
-
-		//Generate
+		//GUI glue code
 		var gen = util.$("generate");
 		var planeWrap = util.$("planeWrap");
 		gen.addEventListener("click", function(){

@@ -135,4 +135,48 @@ describe("langton", function(){
 
 	});
 
+	describe("App", function() {
+
+		it("should be defined", function() {
+			expect(App).toBeDefined();
+		});
+
+		it("should kick start", function() {
+			jasmine.Clock.useMock();
+			spyOn(Ant, 'init');
+			spyOn(Ant, 'walk');
+			App.start([0, 0]);
+			expect(Ant.init).toHaveBeenCalledWith([0, 0], 'n', Plane);
+			expect(Ant.walk).toHaveBeenCalled();
+			expect(App.timer).toBeDefined();
+			jasmine.Clock.tick(101);
+			expect(Ant.walk.calls.length).toEqual(2);
+
+			App.stop();
+			jasmine.Clock.tick(101);
+			expect(Ant.walk.calls.length).toEqual(2);
+		});
+
+	});
+
+	describe("util", function() {
+
+		it("should getId", function() {
+			spyOn(document, 'getElementById');
+			util.$('abc');
+			expect(document.getElementById).toHaveBeenCalledWith('abc');
+		});
+
+		it("should detect td from event", function() {
+			var ev = { target: {tagName:'TD'}};
+			expect(util.isTd(ev)).toBeTruthy();
+		});
+
+		it("should get xy from id", function() {
+			var ev = { target: {id: '1-2'}};
+			expect(util.getXy(ev)).toEqual([1,2]);
+		});
+
+	});
+
 });

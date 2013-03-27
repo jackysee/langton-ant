@@ -1,7 +1,7 @@
 var Plane = {
 
 	getPlane: function(){
-		this.el = this.el || document.getElementById('plane');
+		this.el = this.el || util.$('plane');
 		return this.el;
 	},
 
@@ -23,11 +23,11 @@ var Plane = {
 	},
 
 	isBlack: function(xy){
-		return document.getElementById(xy.join("-")).className === "black";
+		return util.$(xy.join("-")).className === "black";
 	},
 
 	flip: function(xy){
-		document.getElementById(xy.join("-")).className = this.isBlack(xy)? "":"black";
+		util.$(xy.join("-")).className = this.isBlack(xy)? "":"black";
 	},
 
 	rightOf: function(xy){
@@ -90,7 +90,30 @@ var Ant = {
 			this.turnRight();
 
 	}
+};
 
+var App = {
+	timer: null,
+	start: function(xy){
+		Ant.init(xy, 'n', Plane);
+		Ant.walk();
+		this.timer = setInterval(function(){ Ant.walk(); }, 100);
+	},
+	stop: function(){
+		clearInterval(this.timer);
+	}
+};
 
-
+var util = {
+	$: function(id){
+		return document.getElementById(id);
+	},
+	isTd: function(ev){
+		return ev.target.tagName.toLowerCase() === 'td';
+	},
+	getXy: function(ev){
+		return ev.target.id.split("-").map(function(num){
+			return parseInt(num, 10);
+		});
+	}
 };
