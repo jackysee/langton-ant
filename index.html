@@ -37,15 +37,15 @@
 	</div>
 	<script>
 		//GUI glue code
-		var gen = util.$("generate");
-		var planeWrap = util.$("planeWrap");
+		var gen = util.$("#generate")[0];
+		var planeWrap = util.$("#planeWrap")[0];
 		gen.addEventListener("click", function(){
-			Plane.generate(parseInt(util.$('dim').value, 10));
+			Plane.generate(parseInt(util.$('#dim')[0].value, 10));
 			planeWrap.style.display = "";
 		});
 
-		var table = util.$("plane");
-		var stopButton = util.$("stop");
+		var table = util.$("#plane")[0];
+		var stopButton = util.$("#stop")[0];
 		plane.addEventListener("click", function(ev){
 			if(util.isTd(ev)){
 				App.start(util.getXy(ev));

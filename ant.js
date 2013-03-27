@@ -1,7 +1,7 @@
 var Plane = {
 
 	getPlane: function(){
-		this.el = this.el || util.$('plane');
+		this.el = this.el || util.$('#plane')[0];
 		return this.el;
 	},
 
@@ -15,7 +15,7 @@ var Plane = {
 		for(var i=0; i<num; i++){
 			html.push("<tr>");
 			for(var j=0; j<num; j++){
-				html.push('<td id="'+i+'-'+j+'"></td>');
+				html.push('<td id="td_'+i+'_'+j+'"></td>');
 			}
 			html.push("</tr>");
 		}
@@ -23,11 +23,11 @@ var Plane = {
 	},
 
 	isBlack: function(xy){
-		return util.$(xy.join("-")).className === "black";
+		return util.$('#td_'+xy.join("_"))[0].className === "black";
 	},
 
 	flip: function(xy){
-		util.$(xy.join("-")).className = this.isBlack(xy)? "":"black";
+		util.$('#td_'+xy.join("_"))[0].className = this.isBlack(xy)? "":"black";
 	},
 
 	rightOf: function(xy){
@@ -53,8 +53,16 @@ var Plane = {
 		var col = xy[1];
 		return [row, col];
 
-	}
+	},
 
+	clean: function(){
+		[].forEach.call(
+			document.querySelectorAll("#plane .black"),
+			function(td){
+				td.className = "";
+			}
+		);
+	}
 
 };
 
@@ -105,14 +113,14 @@ var App = {
 };
 
 var util = {
-	$: function(id){
-		return document.getElementById(id);
+	$: function(selector){
+		return document.querySelectorAll(selector);
 	},
 	isTd: function(ev){
 		return ev.target.tagName.toLowerCase() === 'td';
 	},
 	getXy: function(ev){
-		return ev.target.id.split("-").map(function(num){
+		return ev.target.id.replace(/^td_/, '').split("_").map(function(num){
 			return parseInt(num, 10);
 		});
 	}

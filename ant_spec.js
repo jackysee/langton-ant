@@ -12,7 +12,7 @@ describe("langton", function(){
 
 		it("should generate plane html based on number", function(){
 			var html  = Plane.generateTableHtml(2);
-			expect(html).toEqual('<tr><td id="0-0"></td><td id="0-1"></td></tr><tr><td id="1-0"></td><td id="1-1"></td></tr>');
+			expect(html).toEqual('<tr><td id="td_0_0"></td><td id="td_0_1"></td></tr><tr><td id="td_1_0"></td><td id="td_1_1"></td></tr>');
 		});
 
 		it("should allow to populate", function() {
@@ -22,7 +22,7 @@ describe("langton", function(){
 
 		it("should allow to query cell is black or white", function() {
 			Plane.generate(2);
-			document.getElementById("0-0").className = "black";
+			document.getElementById("td_0_0").className = "black";
 			expect(Plane.isBlack([0,0])).toBeTruthy();
 			expect(Plane.isBlack([0,1])).toBeFalsy();
 		});
@@ -30,9 +30,9 @@ describe("langton", function(){
 		it("should allow to flip color", function() {
 			Plane.generate(2);
 			Plane.flip([0, 0]);
-			expect(document.getElementById("0-0").className).toEqual("black");
+			expect(document.getElementById("td_0_0").className).toEqual("black");
 			Plane.flip([0, 0]);
-			expect(document.getElementById("0-0").className).toEqual("");
+			expect(document.getElementById("td_0_0").className).toEqual("");
 		});
 
 		it("should allow to query current dimension", function() {
@@ -62,6 +62,14 @@ describe("langton", function(){
 			Plane.generate(2);
 			expect(Plane.downOf([0, 0])).toEqual([1, 0]);
 			expect(Plane.downOf([1, 0])).toEqual([0, 0]);
+		});
+
+		it("should allow to reset plane", function() {
+			Plane.generate(2);
+			Plane.flip([0, 0]);
+			expect(document.querySelectorAll('	.black').length).toEqual(1);
+			Plane.clean();
+			expect(document.querySelectorAll('.black').length).toEqual(0);
 		});
 
 	});
@@ -162,9 +170,9 @@ describe("langton", function(){
 	describe("util", function() {
 
 		it("should getId", function() {
-			spyOn(document, 'getElementById');
+			spyOn(document, 'querySelectorAll');
 			util.$('abc');
-			expect(document.getElementById).toHaveBeenCalledWith('abc');
+			expect(document.querySelectorAll).toHaveBeenCalledWith('abc');
 		});
 
 		it("should detect td from event", function() {
@@ -173,7 +181,7 @@ describe("langton", function(){
 		});
 
 		it("should get xy from id", function() {
-			var ev = { target: {id: '1-2'}};
+			var ev = { target: {id: 'td_1_2'}};
 			expect(util.getXy(ev)).toEqual([1,2]);
 		});
 
